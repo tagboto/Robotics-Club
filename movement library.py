@@ -1,59 +1,50 @@
 #!/usr/bin/env python3
-#The line above must be the first line in the file so the script can be run from Brickman
 
-from ev3dev.ev3 import *
-from time import sleep
+import ev3dev.ev3 as ev3
+import  math
 
+#Creating the variables for the right and a left motor
+rightMotor = ev3.LargeMotor('outC')
+leftMotor = ev3.LargeMotor('outB')
 
-# GLOBAL VARIABLES FOR MY ROBOT
-lcd = Screen()                   # The EV3 display
-rightMotor = LargeMotor('outA')  # The motor connected to the right wheel
-leftMotor = LargeMotor('outD')   # The motor connected to the left wheel
-button = Button()
+#function to go forward a specified distance in cm and a given speed
+def moveForward(distance, speed):
+  encoder=(distance/(2*math.pi*2.8))*360
+  rightMotor.run_to_rel_pos(position_sp=encoder, speed_sp=speed,stop_action="brake")
+  leftMotor.run_to_rel_pos(position_sp=encoder, speed_sp=speed,stop_action="brake")
+  rightMotor.wait_while('running')
+  leftMotor.wait_while('running')
 
-
-
-# USEFUL 'UTILITY' FUNCTIONS FOR MOVEMENT
-
-
-# Start the motor moving straight at a desired speed (forward if speed is positive and backwards
-# if speed is negative), provided the speeds are within safe limits
-def startDrivingStraight(desiredSpeed):
-  #1000 is the maximum speed the robot can drive at and
-  #-1000 is the minimum speed so this checks the value
-  #entered meets those conditions.
-  if (desiredSpeed <= 1000 and desiredSpeed >= -1000):
-    leftMotor.run_forever(speed_sp=desiredSpeed)
-    rightMotor.run_forever(speed_sp=desiredSpeed)
-  else:
-    giveError("Trying to drive too fast")
-    sleep(5)
-
-def startTurning(leftSpeed, rightSpeed):
-  if (leftSpeed <= 1000 and leftSpeed >= -1000 and 
-      rightSpeed<= 1000 and rightSpeed >= -1000):
-    leftMotor.run_forever(speed_sp=leftSpeed)
-    rightMotor.run_forever(speed_sp=rightSpeed)
-  else:
-    giveError("Trying to turn too fast")
-    sleep(5)
-    
-def coastToStopDriving():
-  rightMotor.stop(stop_action='coast')
-  leftMotor.stop(stop_action='coast')
+#function to turn left a given angle in degrees and a given speed 
+def turnLeft(angle, speed): 
+  encoder= (angle*13.5)/2.8
+  leftMotor.stop()
+  rightMotor.run_to_rel_pos(position_sp=encoder, speed_sp=speed,stop_action="brake")
+  rightMotor.wait_while('running')
   
-def brakeToStopDriving():
-  rightMotor.stop(stop_action='brake')
-  leftMotor.stop(stop_action='brake')
+#function to turn right a given angle in degrees and a given speed
+def turnRight(angle, speed): 
+  encoder= (angle*13.5)/2.8
+  rightMotor.stop()
+  leftMotor.run_to_rel_pos(position_sp=encoder, speed_sp=speed,stop_action="brake")
+  leftMotor.wait_while('running')
+  
 
-def holdToStopDriving():
-  rightMotor.stop(stop_action='hold')
-  leftMotor.stop(stop_action='hold')
- 
-  
-# Test script
-if __name__ == '__main__':
-  print("Starting testing")
-  testMovement()
-  print("Done with testing")
-  
+#method to spin the robot right a given angle in degrees and a given speed
+def spinRight(angle,speed):
+ encoder= (angle*13.5)/2.8
+ rightMotor.run_to_rel_pos(position_sp=-encoder, speed_sp=speed,stop_action="brake")
+ leftMotor.run_to_rel_pos(position_sp=encoder, speed_sp=speed,stop_action="brake")
+ rightMotor.wait_while('running')
+ leftMotor.wait_while('running')
+
+#method to spin the robot left a given angle in degrees and a given speed
+def spinLeft(angle,speed):
+ encoder= (angle*13.5)/2.8
+ rightMotor.run_to_rel_pos(position_sp=encoder, speed_sp=speed,stop_action="brake")
+ leftMotor.run_to_rel_pos(position_sp=-encoder, speed_sp=speed,stop_action="brake")
+ rightMotor.wait_while('running')
+ leftMotor.wait_while('running')
+
+
+
