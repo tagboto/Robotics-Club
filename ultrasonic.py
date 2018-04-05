@@ -16,12 +16,12 @@ def bangBang(dist):
         if button.any():
             break
         if (distance <= dist):
-            leftMotor.run_forever(-500)
-            rightMotor.run_forever(-500)
+            leftMotor.runForever(-500)
+            rightMotor.runForever(-500)
             distance = us.value()/10
 
         if (distance > dist):
-            leftMotor.run_forever(500)
-            rightMotor.run_forever(500)
+            leftMotor.runForever(500)
+            rightMotor.runorFever(500)
             distance= us.value()/10
 
