@@ -46,5 +46,36 @@ def spinLeft(angle,speed):
  rightMotor.wait_while('running')
  leftMotor.wait_while('running')
 
+def runForever(speed):
+  leftMotor.run_forever(speed_sp = speed)
+  rightMotor.run_forever(speed_sp = speed)
 
-
+#time is in milliseconds
+def runTimed(time, speed):
+  leftMotor. run_timed(time_sp = time, speed_sp = speed)
+  rightMotor. run_timed(time_sp = time, speed_sp = speed)
+  rightMotor.wait_while('running')
+  leftMotor.wait_while('running')
+  
+def brakeToStopDriving():
+  rightMotor.stop(stop_action = 'brake')
+  leftMotor.stop(stop_action = 'brake')
+  
+def coastToStopDriving():
+  rightMotor.stop(stop_action = 'coast')
+  leftMotor.stop(stop_action = 'coast')
+  
+def holdToStopDriving():
+  rightMotor.stop(stop_action = 'hold')
+  leftMotor.stop(stop_action = 'hold')
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
